@@ -1,0 +1,131 @@
+class Solution(object):
+    def maxDiff(self, num):
+        """
+        Step-by-step solution to find maximum difference between two transformed numbers
+        """
+        
+        # Step 1: Convert number to string for easy digit manipulation
+        num_str = str(num)
+        print("Step 1 - Original number as string: '{}'".format(num_str))
+        
+        # Step 2: Find maximum value 'a'
+        print("\nStep 2 - Finding maximum value 'a':")
+        a_str = num_str
+        
+        # Look for first digit that is not 9
+        for i, digit in enumerate(num_str):
+            if digit != '9':
+                print("  Found first non-9 digit: '{}' at position {}".format(digit, i))
+                # Replace all occurrences of this digit with 9
+                a_str = num_str.replace(digit, '9')
+                print("  Replacing all '{}' with '9': {}".format(digit, a_str))
+                break
+        else:
+            print("  All digits are 9, no replacement needed")
+        
+        a = int(a_str)
+        print("  Maximum value a = {}".format(a))
+        
+        # Step 3: Find minimum value 'b'
+        print("\nStep 3 - Finding minimum value 'b':")
+        b_str = num_str
+        
+        # Check if first digit is not 1
+        if num_str[0] != '1':
+            print("  First digit '{}' is not 1".format(num_str[0]))
+            # Replace all occurrences of first digit with 1
+            first_digit = num_str[0]
+            b_str = num_str.replace(first_digit, '1')
+            print("  Replacing all '{}' with '1': {}".format(first_digit, b_str))
+        else:
+            print("  First digit is 1, looking for next digit to minimize")
+            # First digit is 1, find first digit that is not 0 and not 1
+            replacement_made = False
+            for i in range(1, len(num_str)):  # Start from position 1
+                digit = num_str[i]
+                if digit != '0' and digit != '1':
+                    print("  Found digit '{}' at position {} that can be replaced with 0".format(digit, i))
+                    # Replace all occurrences of this digit with 0
+                    b_str = num_str.replace(digit, '0')
+                    print("  Replacing all '{}' with '0': {}".format(digit, b_str))
+                    replacement_made = True
+                    break
+            
+            if not replacement_made:
+                print("  No digit found that can be replaced, keeping original")
+        
+        b = int(b_str)
+        print("  Minimum value b = {}".format(b))
+        
+        # Step 4: Calculate the difference
+        print("\nStep 4 - Calculate difference:")
+        difference = a - b
+        print("  Difference = {} - {} = {}".format(a, b, difference))
+        
+        return difference
+
+    def maxDiffClean(self, num):
+        """Clean implementation without debug output"""
+        num_str = str(num)
+        
+        # Find maximum value 'a'
+        a_str = num_str
+        for digit in num_str:
+            if digit != '9':
+                a_str = num_str.replace(digit, '9')
+                break
+        a = int(a_str)
+        
+        # Find minimum value 'b'
+        b_str = num_str
+        if num_str[0] != '1':
+            # Replace first digit with 1
+            b_str = num_str.replace(num_str[0], '1')
+        else:
+            # First digit is 1, find next digit to replace with 0
+            for i in range(1, len(num_str)):
+                if num_str[i] != '0' and num_str[i] != '1':
+                    b_str = num_str.replace(num_str[i], '0')
+                    break
+        b = int(b_str)
+        
+        return a - b
+
+
+# Test the class methods
+if __name__ == "__main__":
+    # Create an instance of Solution
+    solution = Solution()
+    
+    # Test with examples
+    print("="*50)
+    print("EXAMPLE 1: num = 555")
+    print("="*50)
+    result1 = solution.maxDiff(555)
+    print("\nFinal Result: {}".format(result1))
+
+    print("\n" + "="*50)
+    print("EXAMPLE 2: num = 9")
+    print("="*50)
+    result2 = solution.maxDiff(9)
+    print("\nFinal Result: {}".format(result2))
+
+    print("\n" + "="*50)
+    print("ADDITIONAL TEST: num = 1234")
+    print("="*50)
+    result3 = solution.maxDiff(1234)
+    print("\nFinal Result: {}".format(result3))
+
+    print("\n" + "="*50)
+    print("ADDITIONAL TEST: num = 9999")
+    print("="*50)
+    result4 = solution.maxDiff(9999)
+    print("\nFinal Result: {}".format(result4))
+
+    print("\n" + "="*50)
+    print("CLEAN IMPLEMENTATION TESTS:")
+    print("="*50)
+    print("solution.maxDiffClean(555) = {}".format(solution.maxDiffClean(555)))
+    print("solution.maxDiffClean(9) = {}".format(solution.maxDiffClean(9)))
+    print("solution.maxDiffClean(1234) = {}".format(solution.maxDiffClean(1234)))
+    print("solution.maxDiffClean(9999) = {}".format(solution.maxDiffClean(9999)))
